@@ -1,0 +1,4 @@
+This project will provide methods
+to generate absolute urls that switch
+between SSL and non-SSL based on
+route information
