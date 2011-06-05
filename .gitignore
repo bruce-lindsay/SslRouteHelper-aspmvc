@@ -1,2 +1,5 @@
+bin
+obj
+*.csproj.user
 *.suo
 

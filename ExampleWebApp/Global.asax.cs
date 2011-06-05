@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SslHelpers;
 
 namespace ExampleWebApp
 {
@@ -20,8 +21,8 @@ namespace ExampleWebApp
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapRoute(Ssl.Avoid, "bullfrog-plain", "bullfrogs");
-            routes.MapRoute(Ssl.Prefer, "bullfrog-secure", "bullfrogs");
+            routes.MapRoute(Ssl.Remove, "bullfrog-plain", "bullfrogs");
+            routes.MapRoute(Ssl.Add, "bullfrog-secure", "bullfrogs");
             routes.MapRoute("bullfrog-rel", "bullfrogs");
 
             routes.MapRoute(
