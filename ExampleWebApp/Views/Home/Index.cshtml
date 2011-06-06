@@ -12,8 +12,14 @@
 <body>
     <div>
         @Url.SslRouteUrl("bullfrog-plain")<br />
+        @Url.SslRouteUrl("bullfrog-plain", new RouteValueDictionary(new { one = 1, two = 2 }))<br />
+        @Url.SslRouteUrl("bullfrog-plain", new { one = 1, two = 2 })<br />
         @Url.SslRouteUrl("bullfrog-secure")<br />
-        @Url.SslRouteUrl("bullfrog-rel")
+        @Url.SslRouteUrl("bullfrog-secure", new RouteValueDictionary(new { one = 1, two = 2 }))<br />
+        @Url.SslRouteUrl("bullfrog-secure", new { one = 1, two = 2 })<br />
+        @Url.SslRouteUrl("bullfrog-rel")<br />
+        @Url.SslRouteUrl("bullfrog-rel", new RouteValueDictionary(new { one = 1, two = 2 }))<br />
+        @Url.SslRouteUrl("bullfrog-rel", new { one = 1, two = 2 })<br />
     </div>
 </body>
 </html>
