@@ -20,6 +20,8 @@
         @Url.SslRouteUrl("bullfrog-rel")<br />
         @Url.SslRouteUrl("bullfrog-rel", new RouteValueDictionary(new { one = 1, two = 2 }))<br />
         @Url.SslRouteUrl("bullfrog-rel", new { one = 1, two = 2 })<br />
+        @Url.SslRouteUrl("Default", new { controller = "secureThis", action = "nonindex" })<br />
+        @Url.SslRouteUrl("Default", new { controller = "Home", action = "" })
     </div>
 </body>
 </html>
