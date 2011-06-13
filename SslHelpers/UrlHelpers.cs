@@ -9,55 +9,45 @@ namespace SslHelpers
 {
     public static class UrlHelpers
     {
-        private static bool TryGetProctocol(string routeName, out string protocol)
+        private static string ProtocolString(Ssl? sslValue)
         {
-            bool getProcotol = false;
-            bool? useSsl = RouteOptions.useSsl(routeName);
+            if (!sslValue.HasValue)
+                return null;
 
-            if (useSsl == true)
-            {
-                getProcotol = true;
-                protocol = System.Uri.UriSchemeHttps;
-            }
-            else if (useSsl == false)
-            {
-                getProcotol = true;
-                protocol = System.Uri.UriSchemeHttp;
-            }
-            else
-            {
-                protocol = null;
-            }
-
-            return getProcotol;
+            return (sslValue == Ssl.Add) ? Uri.UriSchemeHttps : Uri.UriSchemeHttp;
         }
 
-        private static bool TryGetProctocol(RouteValueDictionary routeValues, out string protocol)
+        private static bool TryGetProtocolDefault(out string protocol)
         {
-            bool getProcotol = false;
-            bool? useSsl = null;
+            Ssl? sslDefault = RouteOptions.Current.Default;
 
-            if(routeValues!=null)
-                useSsl =  RouteOptions.controllerUseSsl(routeValues["controller"] as string);
+            protocol = ProtocolString(sslDefault);
 
-            if (useSsl == true)
-            {
-                getProcotol = true;
-                protocol = System.Uri.UriSchemeHttps;
-            }
-            else if (useSsl == false)
-            {
-                getProcotol = true;
-                protocol = System.Uri.UriSchemeHttp;
-            }
-            else
-            {
-                protocol = null;
-            }
-
-            return getProcotol;
+            return sslDefault.HasValue;
         }
 
+        private static bool TryGetProtocol(string routeName, out string protocol)
+        {
+            Ssl? useSsl = RouteOptions.Current.GetOptionForNamedRoute(routeName);
+
+            protocol = ProtocolString(useSsl);
+
+            return useSsl.HasValue;
+        }
+
+        private static bool TryGetProtocol(RouteValueDictionary routeValues, out string protocol)
+        {
+            Ssl? ssl = null;
+
+            if ((routeValues != null) && (routeValues.ContainsKey("controller")))
+            {
+                ssl = RouteOptions.Current.GetOptionForValues(routeValues["controller"] as string);
+            }
+
+            protocol = ProtocolString(ssl);
+
+            return ssl.HasValue;
+        }
 
         public static string SslRouteUrl(this UrlHelper urlHelper, string routeName)
         {
@@ -69,21 +59,22 @@ namespace SslHelpers
             return SslRouteUrl(urlHelper, routeName, new RouteValueDictionary(routeValues));
         }
 
-
         public static string SslRouteUrl(this UrlHelper urlHelper, string routeName, RouteValueDictionary routeValues)
         {
-            string protocol, routeUrl;
+            return SslRouteUrl(urlHelper, routeName, routeValues, null);
+        }
 
-            if(TryGetProctocol(routeName, out protocol) || TryGetProctocol(routeValues, out protocol))
-            {
-                routeUrl = urlHelper.RouteUrl(routeName, routeValues, protocol, null);
-            }
-            else
-            {
-                routeUrl = urlHelper.RouteUrl(routeName, routeValues);
-            }
+        public static string SslRouteUrl(this UrlHelper urlHelper, string routeName, RouteValueDictionary routeValues,
+            string hostName)
+        {
+            string protocol = null;
 
-            return routeUrl;
+            bool foundProtocol = TryGetProtocol(routeName, out protocol)
+                || TryGetProtocol(routeValues, out protocol)
+                || TryGetProtocol(urlHelper.RequestContext.RouteData.Values, out protocol)
+                || TryGetProtocolDefault(out protocol);
+
+            return urlHelper.RouteUrl(routeName, routeValues, protocol, hostName);
         }
     }
 }

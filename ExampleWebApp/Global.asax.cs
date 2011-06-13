@@ -23,7 +23,8 @@ namespace ExampleWebApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(Ssl.Remove, "bullfrog-plain", "bullfrogs");
 
-            SslHelpers.RouteOptions.SetOptionByController("securethis", Ssl.Add);
+            var routeOptions = new SslHelpers.RouteOptions();
+            routeOptions.SetOptionByController(Ssl.Add, "securethis");
 
             routes.MapRoute(Ssl.Add, "bullfrog-secure", "bullfrogs");
             routes.MapRoute("bullfrog-rel", "bullfrogs");
@@ -32,7 +33,6 @@ namespace ExampleWebApp
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-
         }
 
         protected void Application_Start()

@@ -11,7 +11,7 @@ namespace SslHelpers
     {
         public static Route MapRoute(this RouteCollection routes, Ssl ssl, string name, string url)
         {
-            RouteOptions.configureRoute(name, ssl);
+            RouteOptions.Current.SetOptionForNamedRoute(ssl, name);
             return routes.MapRoute(name, url);
         }
     }

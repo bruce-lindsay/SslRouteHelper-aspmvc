@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{25AD6655-60DC-4CBA-93E8-DF7A071C27B5}</ProjectGuid>
+    <ProjectGuid>{07D57177-9D6E-47F5-B498-998C41C29C47}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SslHelpers</RootNamespace>
-    <AssemblyName>SslHelpers</AssemblyName>
+    <RootNamespace>SslHelpers.Test</RootNamespace>
+    <AssemblyName>SslHelpers.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Users\Owner\Documents\NUnit-2.5.10.11092\NUnit-2.5.10.11092\bin\net-2.0\framework\nunit.mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -43,12 +51,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RouteHelpers.cs" />
-    <Compile Include="RouteOptionCollection.cs" />
-    <Compile Include="RouteOptions.cs" />
+    <Compile Include="SslRouteUrlHelperTests.cs" />
+    <Compile Include="FakeHttpContextBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ssl.cs" />
-    <Compile Include="UrlHelpers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SslHelpers\SslHelpers.csproj">
+      <Project>{25AD6655-60DC-4CBA-93E8-DF7A071C27B5}</Project>
+      <Name>SslHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

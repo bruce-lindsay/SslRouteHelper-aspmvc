@@ -8,42 +8,20 @@ namespace SslHelpers
     /// <summary>
     /// store/retrieve the configured options
     /// </summary>
-    public static class RouteOptions
+    public class RouteOptions
     {
-        private static Dictionary<string, bool> _configuredRoutes = new Dictionary<string, bool>();
-        private static Dictionary<string, bool> _configuredControllers = new Dictionary<string, bool>();
+        protected internal static RouteOptionCollection _CurrentOptions = new RouteOptionCollection();
 
-        private static void SetConfiguration(this Dictionary<string, bool> configDict, string key, Ssl sslOption)
+        internal static RouteOptionCollection Current { get { return _CurrentOptions; } }
+
+        public void SetOptionByController(Ssl ssl, string controller)
         {
-            configDict[key] = sslOption == Ssl.Add;
+            _CurrentOptions.SetOptionForValues(ssl, controller);
         }
-
-        public static bool? useSsl(string name)
+        public Ssl? Default 
         {
-            string lowerName = name.ToLowerInvariant();
-            if (_configuredRoutes.ContainsKey(lowerName)) return _configuredRoutes[lowerName];
-            return null;
-        }
-
-        public static void configureRoute(string name, Ssl ssl)
-        {
-            _configuredRoutes.SetConfiguration(name, ssl);
-        }
-
-        public static void SetOptionByController(string controllerName, Ssl ssl)
-        {
-            _configuredControllers.SetConfiguration(controllerName, ssl);
-        }
-
-        internal static bool? controllerUseSsl(string controllerName)
-        {
-            if(!String.IsNullOrWhiteSpace(controllerName))
-            {
-                string nameLower = controllerName.ToLowerInvariant();
-                if (_configuredControllers.ContainsKey(nameLower))
-                    return _configuredControllers[nameLower];
-            }
-            return null;           
+            get { return _CurrentOptions.Default; }
+            set { _CurrentOptions.Default = value; }
         }
     }
 }
